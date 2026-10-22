@@ -190,6 +190,12 @@ See the [`ROADMAP.md`](ROADMAP.md) file for planned development milestones, upco
 
 ---
 
+## Support
+
+If TouchDesigner IDE saves you time and you would like to support its ongoing development, you can [buy me a coffee](https://buymeacoffee.com/yoda7191). Any support is greatly appreciated!
+
+---
+
 ## License
 
 This project is licensed under the Apache License, Version 2.0.
