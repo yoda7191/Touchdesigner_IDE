@@ -504,6 +504,15 @@ def install(parent_op=None, port=9988):
         if hasattr(webserver_dat.par, 'restart'):
             webserver_dat.par.restart.pulse()
 
+        # Save a ready-to-use .tox file in the project folder if possible
+        try:
+            if 'project' in globals() and hasattr(project, 'folder') and project.folder:
+                tox_path = os.path.join(project.folder, 'td_vscode_bridge.tox')
+                bridge_comp.save(tox_path)
+                print(f" [TD_VSCODE_BRIDGE] Exported .tox: {tox_path}")
+        except Exception:
+            pass
+
         print("=" * 65)
         print(" [TD_VSCODE_BRIDGE] Installed successfully!")
         print(f" [TD_VSCODE_BRIDGE] Operator:  {bridge_comp.path}")

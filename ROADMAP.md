@@ -4,35 +4,25 @@ This document outlines the planned development and milestones for the TouchDesig
 
 ---
 
-## Current Status (Version 0.2.0) — Completed
+## Current Status (Version 0.3.0) — Completed
 
-The core communication bridge and editing experience are fully functional:
+The core communication bridge, editing tools, and automated release pipeline are fully functional:
 
 - **Live Communication Bridge**: Two-way WebSocket connection between VS Code and TouchDesigner.
 - **Node & Parameter Autocompletion**: Live suggestions for `op('...')` and `.par.` matching active nodes in TouchDesigner.
-- **Remote Code Execution**: Run selected code or single lines in TouchDesigner using `Cmd + Enter` (Mac) or `Ctrl + Enter` (Windows).
+- **Remote Code Execution**: Run selected code or single lines in TouchDesigner using visual Play buttons or shortcuts (`Cmd + Enter` / `Ctrl + Enter`).
 - **Integrated Textport**: Real-time streaming of TouchDesigner `print()` statements and error tracebacks directly into VS Code.
-- **Operator Tree Sidebar**: Hierarchical view of the TouchDesigner network with one-click DAT editing.
+- **Operator Tree Sidebar**: Hierarchical view of the TouchDesigner network with one-click DAT editing and live connection status badges.
 - **Interactive Python Console (REPL)**: Integrated terminal session with command history for testing code live.
 - **Code Templates (Snippets)**: Quick boilerplates for Execute DATs, Script OPs, Component Extensions, and GLSL shaders.
 - **Go to Definition**: Jump directly to DATs and extension methods using `F12` or `Cmd + Click`.
-- **Universal Bridge Installer**: One-click command in VS Code to copy the bridge setup code directly to the clipboard.
-- **Licensing**: Official Apache 2.0 license configured.
+- **Universal Bridge Installer**: One-click command in VS Code to copy the bridge setup code directly to the clipboard, with automatic `.tox` export.
+- **Automated GitHub Releases**: GitHub Actions pipeline that packages the `.vsix` installer and creates GitHub releases automatically upon version tagging.
+- **Official Licensing & Links**: Apache 2.0 license and repository links configured for publisher `MajaRoczek`.
 
 ---
 
-## Phase 2: Marketplace Release and Distribution (Version 0.3.0) — In Progress
-
-The goal of this phase is to make installing and using the extension as frictionless as possible for any TouchDesigner user.
-
-- **Visual Studio Marketplace Publication**: Publish the extension to the official VS Code Extension Marketplace for one-click installation directly from VS Code.
-- **Pre-Packaged `.tox` File**: Provide a ready-to-use `td_vscode_bridge.tox` file that users can drag and drop directly into the TouchDesigner network pane without opening the Textport.
-- **Automated GitHub Releases**: Setup GitHub Actions to automatically run tests, build the `.vsix` file, and publish releases whenever a new tag is pushed.
-- **Connection Status Indicators**: Add visual connection indicators directly in the Operator Tree sidebar.
-
----
-
-## Phase 3: GLSL Shader Tools & Real-Time Reloading (Version 0.4.0)
+## Phase 3: GLSL Shader Tools & Real-Time Reloading (Version 0.4.0) — Next Up
 
 Enhance the shader coding experience for artists writing custom GLSL TOPs and Material shaders:
 

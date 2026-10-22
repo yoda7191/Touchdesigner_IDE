@@ -90,6 +90,25 @@ export class TouchDesignerTreeDataProvider implements vscode.TreeDataProvider<Op
 
   public async getChildren(element?: OpTreeItem): Promise<OpTreeItem[]> {
     if (!tdClient.isConnected) {
+      if (!element) {
+        // Show status item prompting user to connect
+        const statusNode: OpNode = {
+          name: 'TouchDesigner is Disconnected',
+          path: '',
+          family: 'custom',
+          type: 'Click to Connect',
+          hasChildren: false,
+        };
+        const item = new OpTreeItem(statusNode, vscode.TreeItemCollapsibleState.None);
+        item.description = 'Click to connect';
+        item.tooltip = 'Click to connect to TouchDesigner (ws://127.0.0.1:9988)';
+        item.iconPath = new vscode.ThemeIcon('debug-disconnect');
+        item.command = {
+          command: 'touchdesigner.connect',
+          title: 'Connect to TouchDesigner',
+        };
+        return [item];
+      }
       return [];
     }
 

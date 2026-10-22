@@ -2,7 +2,7 @@
   "name": "touchdesigner-ide",
   "displayName": "TouchDesigner IDE",
   "description": "Interactive development environment for TouchDesigner: live autocompletion, remote Python execution, OP tree explorer, and Textport bridge.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "Apache-2.0",
   "author": "Maja Roczek",
   "publisher": "MajaRoczek",
@@ -255,14 +255,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/touchdesigner-ide/touchdesigner-ide"
+    "url": "https://github.com/yoda7191/Touchdesigner_IDE.git"
+  },
+  "homepage": "https://github.com/yoda7191/Touchdesigner_IDE#readme",
+  "bugs": {
+    "url": "https://github.com/yoda7191/Touchdesigner_IDE/issues"
   },
   "scripts": {
     "vscode:prepublish": "npm run build",
     "build": "node esbuild.js --production",
     "watch": "node esbuild.js --watch",
     "typecheck": "tsc --noEmit",
-    "package": "vsce package --no-dependencies --allow-missing-repository"
+    "package": "vsce package --no-dependencies --allow-missing-repository",
+    "release:patch": "npm version patch && git push && git push --tags",
+    "release:minor": "npm version minor && git push && git push --tags"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",

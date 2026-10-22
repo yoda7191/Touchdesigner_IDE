@@ -1,6 +1,9 @@
 .vscode/**
 .vscode-test/**
+.github/**
 .td_sync/**
+ROADMAP.md
+PUBLISHING_GUIDE.md
 src/**
 node_modules/**
 .gitignore

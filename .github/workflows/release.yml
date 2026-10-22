@@ -1,0 +1,48 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build & Publish VSIX Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension bundle
+        run: npm run build
+
+      - name: Package extension into VSIX
+        id: package
+        run: |
+          npx @vscode/vsce package --no-dependencies --allow-missing-repository
+          VSIX_NAME=$(ls touchdesigner-ide-*.vsix | head -n 1)
+          echo "vsix_name=${VSIX_NAME}" >> $GITHUB_OUTPUT
+          echo "Built package: ${VSIX_NAME}"
+
+      - name: Create GitHub Release and Upload VSIX
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.package.outputs.vsix_name }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+

@@ -77,6 +77,9 @@ export function activate(context: vscode.ExtensionContext) {
   // Listen to TD connection status changes
   tdClient.on('statusChange', (connected: boolean, info?: any) => {
     updateStatusBar(connected, info);
+    treeView.description = connected
+      ? `${info?.projectName || 'Project'} (${info?.tdBuild || ''})`
+      : 'Disconnected';
     if (connected) {
       vscode.window.setStatusBarMessage(
         `TouchDesigner connected: ${info?.projectName || 'Project'} (${info?.tdBuild || ''})`,

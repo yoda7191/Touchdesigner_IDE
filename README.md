@@ -22,21 +22,18 @@ Instead of writing code inside small Text DAT windows in TouchDesigner, you can 
 
 ## Getting Started
 
-Setting up the connection takes less than a minute.
+You do not need to download or compile any source code. You only need the single ready-made extension file (`.vsix`).
 
-### Step 1: Install the Extension in VS Code
+### Step 1: Download and Install the Extension
 
-You can install the extension directly through the VS Code interface without using the terminal:
+1. Go to the [Releases page on GitHub](https://github.com/yoda7191/Touchdesigner_IDE/releases/latest) and download the latest `touchdesigner-ide-0.3.0.vsix` file.
+2. Open **Visual Studio Code**.
+3. Open the Extensions panel by clicking the Extensions icon on the left sidebar (or press `Cmd + Shift + X` on Mac / `Ctrl + Shift + X` on Windows).
+4. Click the three dots menu (`...`) in the top right corner of the Extensions panel.
+5. Select **Install from VSIX...**
+6. Choose the downloaded `touchdesigner-ide-0.3.0.vsix` file.
 
-1. Open Visual Studio Code.
-2. Open the Extensions panel by clicking the Extensions icon on the left sidebar (or press `Cmd + Shift + X` on Mac / `Ctrl + Shift + X` on Windows).
-3. Click the three dots menu (`...`) in the top right corner of the Extensions panel.
-4. Select **Install from VSIX...**
-5. Navigate to your `Touchdesigner_IDE` folder and choose the file named:
-   `touchdesigner-ide-0.2.0.vsix`
-6. Click **Install**.
-
-*Note for Mac terminal users: If you prefer using the terminal and see `command not found: code`, open VS Code, press `Cmd + Shift + P`, type `shell command`, and click `Shell Command: Install 'code' command in PATH`.*
+The extension will install immediately with all features ready to use.
 
 ### Step 2: Start the Bridge in TouchDesigner
 
@@ -141,9 +138,11 @@ TouchDesigner uses specific function names for callback scripts. Instead of look
 
 ---
 
-## How to Build from the Project Source Files
+## Building from Source (For Developers)
 
-If you downloaded the source files from GitHub or cloned the repository, you can build and package the extension yourself using these steps:
+Most users do not need to do this. Simply download the `.vsix` file from the [Releases page](https://github.com/yoda7191/Touchdesigner_IDE/releases/latest) as described in the Getting Started section above.
+
+If you want to contribute to the extension or modify its code yourself, you can build it from source:
 
 1. **Make sure you have Node.js installed**: If you do not have it yet, download and install the LTS version from nodejs.org.
 2. **Open your computer terminal**: Navigate into the folder containing these files:
@@ -164,12 +163,12 @@ If you downloaded the source files from GitHub or cloned the repository, you can
    npm run package
    ```
 
-   This compiles the extension and generates `touchdesigner-ide-0.2.0.vsix`.
+   This compiles the extension and generates `touchdesigner-ide-0.3.0.vsix`.
 5. **Install it into VS Code**:
    - Install through the VS Code interface using **Install from VSIX...**, or run:
 
    ```bash
-   code --install-extension touchdesigner-ide-0.2.0.vsix --force
+   code --install-extension touchdesigner-ide-0.3.0.vsix --force
    ```
 
 ---
