@@ -3,12 +3,17 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { tdClient } from '../bridge/tdClient';
 import { textport } from '../bridge/textportStream';
+import { CompileDiagnostic } from '../bridge/protocol';
 
 export class DatSyncManager {
   // Map of file URI string -> TouchDesigner OP path
   private syncedFiles: Map<string, string> = new Map();
+  private diagnosticCollection: vscode.DiagnosticCollection;
 
   constructor(private context: vscode.ExtensionContext) {
+    this.diagnosticCollection = vscode.languages.createDiagnosticCollection('touchdesigner-glsl');
+    context.subscriptions.push(this.diagnosticCollection);
+
     // Listen for file save events to auto-sync back to TouchDesigner
     context.subscriptions.push(
       vscode.workspace.onDidSaveTextDocument(async (document) => {
@@ -144,13 +149,88 @@ export class DatSyncManager {
     }
 
     try {
-      const success = await tdClient.syncDat(opPath, text);
-      if (success) {
-        vscode.window.setStatusBarMessage(`$(check) Synced to TouchDesigner: ${opPath}`, 2500);
-        textport.log(`Synced changes to TouchDesigner DAT: ${opPath}`, 'SYNC');
+      const res = await tdClient.syncDat(opPath, text);
+      if (res.success) {
+        if (res.reloadedOps && res.reloadedOps.length > 0) {
+          const opsStr = res.reloadedOps.join(', ');
+          vscode.window.setStatusBarMessage(`Synced & reloaded shader on: ${opsStr}`, 3500);
+          textport.log(`Auto-reloaded shader on: ${opsStr}`, 'GLSL');
+        } else {
+          vscode.window.setStatusBarMessage(`Synced to TouchDesigner: ${opPath}`, 2500);
+          textport.log(`Synced changes to TouchDesigner DAT: ${opPath}`, 'SYNC');
+        }
+
+        // Update GLSL compile diagnostics (error squigglies)
+        this.updateDiagnostics(document, res.compileErrors);
       }
     } catch (err: any) {
       vscode.window.showErrorMessage(`Failed to sync to TouchDesigner DAT '${opPath}': ${err.message}`);
     }
+  }
+
+  /**
+   * Parses TouchDesigner compiler error messages and updates VS Code editor diagnostics
+   */
+  private updateDiagnostics(document: vscode.TextDocument, errors?: CompileDiagnostic[]) {
+    if (!errors || errors.length === 0) {
+      this.diagnosticCollection.delete(document.uri);
+      return;
+    }
+
+    const diagnostics: vscode.Diagnostic[] = [];
+
+    // Calculate header line offset if file had auto-generated header
+    let headerOffset = 0;
+    if (document.lineCount > 0) {
+      const firstLine = document.lineAt(0).text;
+      if (firstLine.match(/^(?:#|\/\/)\s*td:/i)) {
+        headerOffset++;
+        if (document.lineCount > 1 && document.lineAt(1).text.match(/^(?:#|\/\/)\s*Auto-synced/i)) {
+          headerOffset++;
+        }
+        if (document.lineCount > headerOffset && document.lineAt(headerOffset).text.trim() === '') {
+          headerOffset++;
+        }
+      }
+    }
+
+    for (const item of errors) {
+      const errorMsg = item.error || item.warning || '';
+      if (!errorMsg.trim()) {
+        continue;
+      }
+
+      // Log error to Textport output
+      textport.log(`Compile Error on ${item.path}:\n${errorMsg}`, 'GLSL ERROR');
+
+      // Split multi-line error logs into individual errors
+      const errorLines = errorMsg.split('\n');
+      for (const rawLine of errorLines) {
+        const trimmed = rawLine.trim();
+        if (!trimmed) continue;
+
+        // Matches GLSL compiler error formats: 0(15) : error or ERROR: 0:15: or (15) : error
+        const lineMatch = trimmed.match(/(?:0\((\d+)\)|0:(\d+):|\((\d+)\)\s*:)/);
+        let targetLine = 0;
+        if (lineMatch) {
+          const rawLineNum = parseInt(lineMatch[1] || lineMatch[2] || lineMatch[3], 10);
+          targetLine = Math.max(0, rawLineNum - 1 + headerOffset);
+        }
+
+        const clampedLine = Math.min(targetLine, Math.max(0, document.lineCount - 1));
+        const lineRange = document.lineAt(clampedLine).range;
+
+        const isError = /error/i.test(trimmed);
+        const diagnostic = new vscode.Diagnostic(
+          lineRange,
+          `[${item.path}] ${trimmed}`,
+          isError ? vscode.DiagnosticSeverity.Error : vscode.DiagnosticSeverity.Warning
+        );
+        diagnostic.source = 'TouchDesigner GLSL';
+        diagnostics.push(diagnostic);
+      }
+    }
+
+    this.diagnosticCollection.set(document.uri, diagnostics);
   }
 }

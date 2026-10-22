@@ -16,7 +16,9 @@ Instead of writing code inside small Text DAT windows in TouchDesigner, you can 
 - **Two-Way Sync**: Edit a script in VS Code, hit Save, and the changes update inside your TouchDesigner DAT automatically.
 - **TouchDesigner Textport in VS Code**: All `print()` outputs, status messages, and Python error messages stream directly into an output window in VS Code.
 - **Interactive Python Console**: Open an interactive TouchDesigner terminal in VS Code with a single click to test code live with command history.
-- **Ready-to-Use Code Templates**: Type quick abbreviations like `td-exec` or `td-chopexec` to instantly insert correctly structured callback scripts and extensions.
+- **Real-Time GLSL Shader Reloading**: When editing GLSL shaders, saving the file automatically pulses dependent GLSL TOPs and MATs in TouchDesigner to recompile without manual clicking.
+- **Shader Compile Error Highlighting**: If a shader fails to compile, TouchDesigner's exact error message appears as red underline markers directly on the affected lines in VS Code.
+- **Ready-to-Use Code Templates**: Type quick abbreviations like `td-exec`, `td-chopexec`, or `td-raymarch` to instantly insert correctly structured callback scripts and shader presets.
 
 ---
 
@@ -26,12 +28,12 @@ You do not need to download or compile any source code. You only need the single
 
 ### Step 1: Download and Install the Extension
 
-1. Go to the [Releases page on GitHub](https://github.com/yoda7191/Touchdesigner_IDE/releases/latest) and download the latest `touchdesigner-ide-0.3.0.vsix` file.
+1. Go to the [Releases page on GitHub](https://github.com/yoda7191/Touchdesigner_IDE/releases/latest) and download the latest `touchdesigner-ide-0.4.0.vsix` file.
 2. Open **Visual Studio Code**.
 3. Open the Extensions panel by clicking the Extensions icon on the left sidebar (or press `Cmd + Shift + X` on Mac / `Ctrl + Shift + X` on Windows).
 4. Click the three dots menu (`...`) in the top right corner of the Extensions panel.
 5. Select **Install from VSIX...**
-6. Choose the downloaded `touchdesigner-ide-0.3.0.vsix` file.
+6. Choose the downloaded `touchdesigner-ide-0.4.0.vsix` file.
 
 The extension will install immediately with all features ready to use.
 
@@ -106,6 +108,12 @@ Click the TouchDesigner icon on the left Activity Bar to open the Operator Tree.
 - A terminal window opens with a `td >>>` prompt where you can test code live against your open TouchDesigner project.
 - Use the **Up and Down arrow keys** to cycle through your command history.
 
+### GLSL Shader Live Reloading & Error Highlighting
+
+- **Instant Recompile on Save**: When you save any GLSL fragment or vertex shader DAT in VS Code, the extension automatically instructs TouchDesigner to reload and recompile the shader.
+- **In-Line Compiler Error Squigglies**: If your shader code has a syntax error or compilation problem, VS Code places a red wavy underline on the exact line that caused the error. Hovering over the underline shows the TouchDesigner error message.
+- **Automatic Offset Handling**: The error reporter automatically accounts for comment headers so line numbers match up accurately.
+
 ---
 
 ## Keyboard Shortcuts
@@ -135,6 +143,11 @@ TouchDesigner uses specific function names for callback scripts. Instead of look
 | `td-par-custom` | Custom parameter creation helper code |
 | `td-glsl-top` | Complete GLSL TOP pixel shader template |
 | `td-glsl-vert` | Complete GLSL MAT vertex shader template |
+| `td-raymarch` | Raymarching Signed Distance Field (SDF) starter shader with lighting |
+| `td-feedback` | Multi-frame feedback loop trail and decay shader |
+| `td-noise` | Procedural fractal Brownian motion (FBM) noise shader |
+| `td-chromatic` | Chromatic aberration and lens distortion post-processing effect |
+| `td-compute` | TouchDesigner GLSL Compute TOP template |
 
 ---
 
@@ -163,12 +176,12 @@ If you want to contribute to the extension or modify its code yourself, you can 
    npm run package
    ```
 
-   This compiles the extension and generates `touchdesigner-ide-0.3.0.vsix`.
+   This compiles the extension and generates `touchdesigner-ide-0.4.0.vsix`.
 5. **Install it into VS Code**:
    - Install through the VS Code interface using **Install from VSIX...**, or run:
 
    ```bash
-   code --install-extension touchdesigner-ide-0.3.0.vsix --force
+   code --install-extension touchdesigner-ide-0.4.0.vsix --force
    ```
 
 ---
@@ -181,6 +194,8 @@ If you run TouchDesigner on a second computer or need to change the network port
 - **Server Port**: The port number used by the bridge component (defaults to `9988`).
 - **Auto Connect**: Whether VS Code automatically attempts to connect to TouchDesigner when you open the project (defaults to `true`).
 - **Show Textport on Output**: Whether to automatically show the Textport panel when code execution produces an error or output (defaults to `true`).
+- **Auto Pulse GLSL on Save**: Automatically reload dependent GLSL TOPs and MATs when saving shader files (defaults to `true`).
+- **Show GLSL Diagnostics**: Display TouchDesigner GLSL compiler errors as red underline markers on corresponding lines (defaults to `true`).
 
 ---
 

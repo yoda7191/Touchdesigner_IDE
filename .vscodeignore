@@ -2,6 +2,7 @@
 .vscode-test/**
 .github/**
 .td_sync/**
+tests/**
 ROADMAP.md
 PUBLISHING_GUIDE.md
 src/**

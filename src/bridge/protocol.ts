@@ -180,9 +180,18 @@ export interface GetOpParamsResponse extends BaseResponse {
   customMembers: string[];
 }
 
+export interface CompileDiagnostic {
+  path: string;
+  opType?: string;
+  error?: string;
+  warning?: string;
+}
+
 export interface SyncDatResponse extends BaseResponse {
   action: 'sync_dat';
   path: string;
+  reloadedOps?: string[];
+  compileErrors?: CompileDiagnostic[];
 }
 
 export interface FetchDatResponse extends BaseResponse {

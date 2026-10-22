@@ -2,7 +2,7 @@
   "name": "touchdesigner-ide",
   "displayName": "TouchDesigner IDE",
   "description": "Interactive development environment for TouchDesigner: live autocompletion, remote Python execution, OP tree explorer, and Textport bridge.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "license": "Apache-2.0",
   "author": "Maja Roczek",
   "publisher": "MajaRoczek",
@@ -161,19 +161,23 @@
       "editor/title": [
         {
           "command": "touchdesigner.executeSelection",
-          "group": "navigation@1"
+          "group": "navigation@1",
+          "when": "resourceLangId == python || resourceLangId == glsl"
         },
         {
           "command": "touchdesigner.executeFile",
-          "group": "navigation@2"
+          "group": "navigation@2",
+          "when": "resourceLangId == python || resourceLangId == glsl"
         },
         {
           "command": "touchdesigner.openRepl",
-          "group": "navigation@3"
+          "group": "navigation@3",
+          "when": "resourceLangId == python || resourceLangId == glsl"
         },
         {
           "command": "touchdesigner.copyBridgeInstaller",
-          "group": "touchdesigner@1"
+          "group": "touchdesigner@1",
+          "when": "resourceLangId == python || resourceLangId == glsl"
         }
       ],
       "view/title": [
@@ -249,6 +253,16 @@
           "type": "boolean",
           "default": true,
           "description": "Automatically focus the Textport output channel when code execution produces output or errors."
+        },
+        "touchdesigner.autoPulseGlslOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically pulse loadpulse on dependent GLSL TOPs and MATs when saving shader files."
+        },
+        "touchdesigner.showGlslDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "description": "Display TouchDesigner GLSL compiler errors as red underline markers on the corresponding code lines."
         }
       }
     }
@@ -266,6 +280,7 @@
     "build": "node esbuild.js --production",
     "watch": "node esbuild.js --watch",
     "typecheck": "tsc --noEmit",
+    "test": "npm run typecheck && node tests/test_vscode_features.js && python3 tests/test_bridge_python.py",
     "package": "vsce package --no-dependencies --allow-missing-repository",
     "release:patch": "npm version patch && git push && git push --tags",
     "release:minor": "npm version minor && git push && git push --tags"

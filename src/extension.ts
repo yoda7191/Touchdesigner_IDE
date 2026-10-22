@@ -51,23 +51,23 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.languages.registerDefinitionProvider(['python'], definitionProvider)
   );
 
-  // Status Bar Item
-  statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+  // Status Bar Item with explicit ID to prevent duplication
+  statusBarItem = vscode.window.createStatusBarItem('touchdesigner.status', vscode.StatusBarAlignment.Right, 100);
   statusBarItem.command = 'touchdesigner.toggleConnection';
   updateStatusBar(false);
   statusBarItem.show();
   context.subscriptions.push(statusBarItem);
 
-  // Status Bar Run Script Button
-  runStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 99);
+  // Status Bar Run Script Button with explicit ID to prevent duplication
+  runStatusBarItem = vscode.window.createStatusBarItem('touchdesigner.run', vscode.StatusBarAlignment.Right, 99);
   runStatusBarItem.text = '$(play) Run in TD';
   runStatusBarItem.tooltip = 'Click to run selected code or current line in TouchDesigner (Cmd+Enter)';
   runStatusBarItem.command = 'touchdesigner.executeSelection';
   runStatusBarItem.show();
   context.subscriptions.push(runStatusBarItem);
 
-  // Status Bar Interactive REPL Button
-  replStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 98);
+  // Status Bar Interactive REPL Button with explicit ID to prevent duplication
+  replStatusBarItem = vscode.window.createStatusBarItem('touchdesigner.repl', vscode.StatusBarAlignment.Right, 98);
   replStatusBarItem.text = '$(terminal) TD REPL';
   replStatusBarItem.tooltip = 'Open TouchDesigner Interactive Python REPL Terminal';
   replStatusBarItem.command = 'touchdesigner.openRepl';
@@ -307,6 +307,9 @@ function updateStatusBar(connected: boolean, info?: any) {
 }
 
 export function deactivate() {
+  statusBarItem?.dispose();
+  runStatusBarItem?.dispose();
+  replStatusBarItem?.dispose();
   tdClient.disconnect();
   textport.dispose();
 }

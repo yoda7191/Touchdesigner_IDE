@@ -74,7 +74,7 @@ def onWebSocketReceiveText(webServerDAT, client, data):
 
 def handle_ping(response):
     response.update({
-        'version': '0.1.0',
+        'version': '0.4.0',
         'tdVersion': app.version,
         'tdBuild': app.build,
         'os': app.osName,
@@ -360,6 +360,60 @@ def handle_sync_dat(req, response):
 
     target.text = content
     response['path'] = target.path
+
+    # Auto-pulse reload on dependent GLSL operators and collect compile diagnostics
+    reloaded_ops = []
+    compile_errors = []
+
+    dependents = list(target.dependents) if hasattr(target, 'dependents') else []
+    if target.parent and getattr(target.parent, 'type', '') in ('glsl', 'glslmulti', 'glslmat', 'glslcompute'):
+        if target.parent not in dependents:
+            dependents.append(target.parent)
+
+    for dep in dependents:
+        # Check for loadpulse or loadfiles parameters
+        if hasattr(dep, 'par'):
+            if hasattr(dep.par, 'loadpulse'):
+                try:
+                    dep.par.loadpulse.pulse()
+                    reloaded_ops.append(dep.path)
+                except Exception:
+                    pass
+            elif hasattr(dep.par, 'loadfiles'):
+                try:
+                    dep.par.loadfiles.pulse()
+                    reloaded_ops.append(dep.path)
+                except Exception:
+                    pass
+        if hasattr(dep, 'cook'):
+            try:
+                dep.cook(force=True)
+            except Exception:
+                pass
+
+        # Check errors / warnings
+        if hasattr(dep, 'errors') and dep.errors():
+            compile_errors.append({
+                'path': dep.path,
+                'opType': getattr(dep, 'type', ''),
+                'error': dep.errors()
+            })
+        if hasattr(dep, 'warnings') and dep.warnings():
+            compile_errors.append({
+                'path': dep.path,
+                'opType': getattr(dep, 'type', ''),
+                'warning': dep.warnings()
+            })
+
+    if hasattr(target, 'errors') and target.errors():
+        compile_errors.append({
+            'path': target.path,
+            'opType': getattr(target, 'type', ''),
+            'error': target.errors()
+        })
+
+    response['reloadedOps'] = reloaded_ops
+    response['compileErrors'] = compile_errors
 
 
 def handle_fetch_dat(req, response):

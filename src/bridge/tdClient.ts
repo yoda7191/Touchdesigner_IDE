@@ -332,13 +332,12 @@ export class TDClient extends EventEmitter {
     return res.details;
   }
 
-  public async syncDat(path: string, content: string): Promise<boolean> {
-    const res = await this.sendRequest<SyncDatResponse>({
+  public async syncDat(path: string, content: string): Promise<SyncDatResponse> {
+    return this.sendRequest<SyncDatResponse>({
       action: 'sync_dat',
       path,
       content,
     });
-    return res.success;
   }
 
   public async fetchDat(path: string): Promise<{ content: string; isTable: boolean }> {

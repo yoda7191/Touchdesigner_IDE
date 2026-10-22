@@ -4,9 +4,9 @@ This document outlines the planned development and milestones for the TouchDesig
 
 ---
 
-## Current Status (Version 0.3.0) — Completed
+## Current Status (Version 0.4.0) — Completed
 
-The core communication bridge, editing tools, and automated release pipeline are fully functional:
+The core communication bridge, editing tools, automated release pipeline, and GLSL tools are fully functional:
 
 - **Live Communication Bridge**: Two-way WebSocket connection between VS Code and TouchDesigner.
 - **Node & Parameter Autocompletion**: Live suggestions for `op('...')` and `.par.` matching active nodes in TouchDesigner.
@@ -18,21 +18,14 @@ The core communication bridge, editing tools, and automated release pipeline are
 - **Go to Definition**: Jump directly to DATs and extension methods using `F12` or `Cmd + Click`.
 - **Universal Bridge Installer**: One-click command in VS Code to copy the bridge setup code directly to the clipboard, with automatic `.tox` export.
 - **Automated GitHub Releases**: GitHub Actions pipeline that packages the `.vsix` installer and creates GitHub releases automatically upon version tagging.
+- **Real-Time GLSL Live Reload**: Automatically reloads and recompiles dependent GLSL TOPs, GLSL Multi TOPs, and GLSL MATs when saving shader files in VS Code.
+- **Shader Compile Error Highlighting**: Displays TouchDesigner GLSL compilation errors with red underline markers directly on the offending line in VS Code.
+- **Creative Shader Presets**: Built-in templates for raymarching SDFs, feedback trails, procedural FBM noise, chromatic aberration, and compute shaders.
 - **Official Licensing & Links**: Apache 2.0 license and repository links configured for publisher `MajaRoczek`.
 
 ---
 
-## Phase 3: GLSL Shader Tools & Real-Time Reloading (Version 0.4.0) — Next Up
-
-Enhance the shader coding experience for artists writing custom GLSL TOPs and Material shaders:
-
-- **Auto-Pulse Reload on Save**: Automatically pulse the `loadpulse` parameter on GLSL TOPs and MATs when their shader files are saved in VS Code.
-- **Shader Compile Error Highlighting**: When a GLSL compilation error occurs in TouchDesigner, display red underline markers and error tooltips directly on the corresponding line in VS Code.
-- **Shader Template Presets**: Expand the snippet library with common creative coding patterns (raymarching setups, feedback loops, noise generators, and multi-input blending).
-
----
-
-## Phase 4: Workflow Tools & Parameter Inspection (Version 0.5.0)
+## Phase 4: Workflow Tools & Parameter Inspection (Version 0.5.0) — Next Up
 
 Bring visual TouchDesigner controls directly into VS Code to reduce window switching:
 
