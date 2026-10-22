@@ -1,0 +1,15 @@
+{
+  "python.defaultInterpreterPath": "/Applications/TouchDesigner.app/Contents/Frameworks/Python.framework/Versions/3.11/bin/python3.11",
+  "python.analysis.extraPaths": [
+    "/Applications/TouchDesigner.app/Contents/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages"
+  ],
+  "python.autoComplete.extraPaths": [
+    "/Applications/TouchDesigner.app/Contents/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages"
+  ],
+  "python.analysis.typeCheckingMode": "basic",
+  "touchdesigner.serverHost": "127.0.0.1",
+  "touchdesigner.serverPort": 9988,
+  "touchdesigner.autoConnect": true,
+  "touchdesigner.showTextportOnOutput": true
+}
+

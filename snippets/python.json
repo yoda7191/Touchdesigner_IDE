@@ -1,0 +1,218 @@
+{
+  "TouchDesigner Python Extension": {
+    "prefix": "td-ext",
+    "body": [
+      "\"\"\"",
+      "Extension: ${1:MyExtension}",
+      "Owner: \t${2:ownerComp}",
+      "\"\"\"",
+      "",
+      "class ${1:MyExtension}:",
+      "\t\"\"\"",
+      "\t${1:MyExtension} TouchDesigner Component Extension",
+      "\t\"\"\"",
+      "\tdef __init__(self, ownerComp):",
+      "\t\tself.ownerComp = ownerComp",
+      "\t\t# Initialize internal state or stored items",
+      "\t\tself.ownerComp.store('${3:my_state}', ${4:None})",
+      "",
+      "\tdef ${5:MyFunction}(self, ${6:arg}=None):",
+      "\t\t\"\"\"${7:Description of MyFunction}\"\"\"",
+      "\t\t${8:pass}",
+      "",
+      "\t@property",
+      "\tdef ${9:State}(self):",
+      "\t\treturn self.ownerComp.fetch('${3:my_state}', None)",
+      ""
+    ],
+    "description": "TouchDesigner COMP Python Extension Class boilerplate"
+  },
+  "Execute DAT Callbacks": {
+    "prefix": "td-exec",
+    "body": [
+      "# me - this DAT",
+      "# ",
+      "# frame - the current frame",
+      "# state - True if the timeline is playing",
+      "",
+      "def onStart():",
+      "\t\"\"\"Called once when TouchDesigner starts up or file loads\"\"\"",
+      "\t${1:pass}",
+      "",
+      "def onCreate():",
+      "\t\"\"\"Called once when this operator is created\"\"\"",
+      "\tpass",
+      "",
+      "def onExit():",
+      "\t\"\"\"Called once when TouchDesigner is quitting\"\"\"",
+      "\tpass",
+      "",
+      "def onFrameStart(frame):",
+      "\t\"\"\"Called at the start of every frame\"\"\"",
+      "\tpass",
+      "",
+      "def onFrameEnd(frame):",
+      "\t\"\"\"Called at the end of every frame\"\"\"",
+      "\tpass",
+      "",
+      "def onPlayStateChange(state):",
+      "\t\"\"\"Called when playback starts or stops\"\"\"",
+      "\tpass",
+      ""
+    ],
+    "description": "Execute DAT callback functions"
+  },
+  "CHOP Execute DAT Callbacks": {
+    "prefix": "td-chopexec",
+    "body": [
+      "# me - this DAT",
+      "# inputOp - the connected CHOP",
+      "# channel - the Channel object that changed",
+      "# sampleIndex - the index of the sample that changed",
+      "# val - the current numeric value",
+      "# prev - the previous numeric value",
+      "",
+      "def onValueChange(channel, sampleIndex, val, prev):",
+      "\t\"\"\"Called when any monitored channel changes value\"\"\"",
+      "\t${1:pass}",
+      "",
+      "def onOffToOn(channel, sampleIndex, val, prev):",
+      "\t\"\"\"Called when channel value rises above 0 (rising edge)\"\"\"",
+      "\tpass",
+      "",
+      "def onWhileOn(channel, sampleIndex, val, prev):",
+      "\t\"\"\"Called every frame while channel value is > 0\"\"\"",
+      "\tpass",
+      "",
+      "def onOnToOff(channel, sampleIndex, val, prev):",
+      "\t\"\"\"Called when channel value drops to 0 or below (falling edge)\"\"\"",
+      "\tpass",
+      "",
+      "def onWhileOff(channel, sampleIndex, val, prev):",
+      "\t\"\"\"Called every frame while channel value is <= 0\"\"\"",
+      "\tpass",
+      ""
+    ],
+    "description": "CHOP Execute DAT callback functions"
+  },
+  "Parameter Execute DAT Callbacks": {
+    "prefix": "td-parexec",
+    "body": [
+      "# me - this DAT",
+      "# par - the Parameter object that changed",
+      "# prev - the previous value",
+      "",
+      "def onValueChange(par, prev):",
+      "\t\"\"\"Called when parameter value changes\"\"\"",
+      "\t${1:pass}",
+      "",
+      "def onPulse(par):",
+      "\t\"\"\"Called when a pulse parameter is triggered\"\"\"",
+      "\tpass",
+      "",
+      "def onExpressionChange(par, val, prev):",
+      "\t\"\"\"Called when an expression parameter changes\"\"\"",
+      "\tpass",
+      ""
+    ],
+    "description": "Parameter Execute DAT callback functions"
+  },
+  "Panel Execute DAT Callbacks": {
+    "prefix": "td-panelexec",
+    "body": [
+      "# me - this DAT",
+      "# panelValue - the PanelValue object",
+      "",
+      "def onPanelValueChange(panelValue):",
+      "\t${1:pass}",
+      "",
+      "def onSelect(panelValue):",
+      "\t\"\"\"Called when panel is clicked/selected\"\"\"",
+      "\tpass",
+      "",
+      "def onHover(panelValue):",
+      "\t\"\"\"Called when mouse hovers over panel\"\"\"",
+      "\tpass",
+      ""
+    ],
+    "description": "Panel Execute DAT callback functions"
+  },
+  "Script DAT onCook": {
+    "prefix": "td-cook-dat",
+    "body": [
+      "# me - this DAT",
+      "# scriptOp - the Script DAT",
+      "",
+      "def onCook(scriptOp):",
+      "\tscriptOp.clear()",
+      "\t# Append headers",
+      "\tscriptOp.appendRow(['${1:id}', '${2:name}', '${3:value}'])",
+      "\t# Append sample data",
+      "\tscriptOp.appendRow([${4:1}, '${5:item}', ${6:100}])",
+      ""
+    ],
+    "description": "Script DAT onCook callback"
+  },
+  "Script CHOP onCook": {
+    "prefix": "td-cook-chop",
+    "body": [
+      "# me - this DAT",
+      "# scriptOp - the Script CHOP",
+      "",
+      "def onCook(scriptOp):",
+      "\tscriptOp.clear()",
+      "\tscriptOp.numSamples = ${1:100}",
+      "\tscriptOp.rate = ${2:60}",
+      "",
+      "\tchan1 = scriptOp.appendChan('${3:chan1}')",
+      "\tfor i in range(scriptOp.numSamples):",
+      "\t\tchan1[i] = ${4:i / scriptOp.numSamples}",
+      ""
+    ],
+    "description": "Script CHOP onCook callback"
+  },
+  "Script SOP onCook": {
+    "prefix": "td-cook-sop",
+    "body": [
+      "# me - this DAT",
+      "# scriptOp - the Script SOP",
+      "",
+      "def onCook(scriptOp):",
+      "\tscriptOp.clear()",
+      "\t# Create poly primitive",
+      "\tpoly = scriptOp.appendPoly(${1:4}, closed=${2:True})",
+      "\tpts = [",
+      "\t\t(-1, -1, 0),",
+      "\t\t( 1, -1, 0),",
+      "\t\t( 1,  1, 0),",
+      "\t\t(-1,  1, 0)",
+      "\t]",
+      "\tfor i, p in enumerate(pts):",
+      "\t\tpt = scriptOp.appendPoint()",
+      "\t\tpt.point.P = p",
+      "\t\tpoly[i].point = pt",
+      ""
+    ],
+    "description": "Script SOP onCook callback"
+  },
+  "Custom Parameters Setup": {
+    "prefix": "td-par-custom",
+    "body": [
+      "page = ${1:parent()}.customPages.append('${2:Settings}')",
+      "page.appendFloat('${3:Speed}', label='${4:Speed}')[0].val = ${5:1.0}",
+      "page.appendPulse('${6:Reset}', label='${7:Reset}')",
+      "page.appendToggle('${8:Enable}', label='${9:Enable}')[0].val = ${10:True}",
+      ""
+    ],
+    "description": "TouchDesigner Custom Parameters creation code"
+  },
+  "Delayed Run Script": {
+    "prefix": "td-run",
+    "body": [
+      "run('${1:op(\"${2:geo1}\").par.reset.pulse()}', delayFrames=${3:1})",
+      ""
+    ],
+    "description": "TouchDesigner run() delayed script execution"
+  }
+}
+

@@ -1,0 +1,278 @@
+{
+  "name": "touchdesigner-ide",
+  "displayName": "TouchDesigner IDE",
+  "description": "Interactive development environment for TouchDesigner: live autocompletion, remote Python execution, OP tree explorer, and Textport bridge.",
+  "version": "0.2.0",
+  "license": "Apache-2.0",
+  "author": "Maja Roczek",
+  "publisher": "MajaRoczek",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "touchdesigner",
+    "python",
+    "glsl",
+    "creative-coding",
+    "live-coding"
+  ],
+  "activationEvents": [
+    "onLanguage:python",
+    "onLanguage:glsl",
+    "onCommand:touchdesigner.connect",
+    "onView:touchdesigner-explorer"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "touchdesigner.connect",
+        "title": "Connect to TouchDesigner",
+        "category": "TouchDesigner",
+        "icon": "$(plug)"
+      },
+      {
+        "command": "touchdesigner.disconnect",
+        "title": "Disconnect from TouchDesigner",
+        "category": "TouchDesigner",
+        "icon": "$(debug-disconnect)"
+      },
+      {
+        "command": "touchdesigner.executeSelection",
+        "title": "Execute Selected Code in TouchDesigner",
+        "category": "TouchDesigner",
+        "icon": "$(play)"
+      },
+      {
+        "command": "touchdesigner.executeFile",
+        "title": "Execute Entire File in TouchDesigner",
+        "category": "TouchDesigner",
+        "icon": "$(run-all)"
+      },
+      {
+        "command": "touchdesigner.refreshOpTree",
+        "title": "Refresh Operator Tree",
+        "category": "TouchDesigner",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "touchdesigner.setupPythonEnvironment",
+        "title": "Configure TouchDesigner Python Environment & Stubs",
+        "category": "TouchDesigner",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "touchdesigner.openTextport",
+        "title": "Show TouchDesigner Textport",
+        "category": "TouchDesigner",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "touchdesigner.openRepl",
+        "title": "Open TouchDesigner Interactive REPL",
+        "category": "TouchDesigner",
+        "icon": "$(terminal-linux)"
+      },
+      {
+        "command": "touchdesigner.copyBridgeInstaller",
+        "title": "Copy Bridge Installer Script to Clipboard",
+        "category": "TouchDesigner",
+        "icon": "$(clippy)"
+      },
+      {
+        "command": "touchdesigner.newScript",
+        "title": "Create New TouchDesigner Script",
+        "category": "TouchDesigner",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "touchdesigner.exportBridgeScript",
+        "title": "Save Bridge Installer Script to Project Folder",
+        "category": "TouchDesigner",
+        "icon": "$(save)"
+      },
+      {
+        "command": "touchdesigner.openDat",
+        "title": "Open DAT in Editor",
+        "category": "TouchDesigner"
+      },
+      {
+        "command": "touchdesigner.cookOp",
+        "title": "Cook / Force Update Operator",
+        "category": "TouchDesigner",
+        "icon": "$(play-circle)"
+      },
+      {
+        "command": "touchdesigner.copyOpPath",
+        "title": "Copy Operator Reference to Clipboard",
+        "category": "TouchDesigner",
+        "icon": "$(copy)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "touchdesigner.executeSelection",
+        "key": "cmd+enter",
+        "mac": "cmd+enter",
+        "win": "ctrl+enter",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "touchdesigner.executeFile",
+        "key": "shift+cmd+enter",
+        "mac": "shift+cmd+enter",
+        "win": "shift+ctrl+enter",
+        "when": "editorTextFocus"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "touchdesigner-container",
+          "title": "TouchDesigner",
+          "icon": "$(circuit-board)"
+        }
+      ]
+    },
+    "views": {
+      "touchdesigner-container": [
+        {
+          "id": "touchdesigner-explorer",
+          "name": "Operator Tree",
+          "contextualTitle": "TouchDesigner"
+        }
+      ]
+    },
+    "snippets": [
+      {
+        "language": "python",
+        "path": "./snippets/python.json"
+      },
+      {
+        "language": "glsl",
+        "path": "./snippets/glsl.json"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "touchdesigner.executeSelection",
+          "group": "navigation@1"
+        },
+        {
+          "command": "touchdesigner.executeFile",
+          "group": "navigation@2"
+        },
+        {
+          "command": "touchdesigner.openRepl",
+          "group": "navigation@3"
+        },
+        {
+          "command": "touchdesigner.copyBridgeInstaller",
+          "group": "touchdesigner@1"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "touchdesigner.copyBridgeInstaller",
+          "when": "view == touchdesigner-explorer",
+          "group": "navigation@1"
+        },
+        {
+          "command": "touchdesigner.openRepl",
+          "when": "view == touchdesigner-explorer",
+          "group": "navigation@2"
+        },
+        {
+          "command": "touchdesigner.refreshOpTree",
+          "when": "view == touchdesigner-explorer",
+          "group": "navigation@3"
+        },
+        {
+          "command": "touchdesigner.connect",
+          "when": "view == touchdesigner-explorer",
+          "group": "navigation@4"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "touchdesigner.openDat",
+          "when": "view == touchdesigner-explorer && viewItem == touchdesigner.dat",
+          "group": "inline"
+        },
+        {
+          "command": "touchdesigner.cookOp",
+          "when": "view == touchdesigner-explorer",
+          "group": "touchdesigner@1"
+        },
+        {
+          "command": "touchdesigner.copyOpPath",
+          "when": "view == touchdesigner-explorer",
+          "group": "touchdesigner@2"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "touchdesigner.executeSelection",
+          "group": "touchdesigner@1",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "touchdesigner.executeFile",
+          "group": "touchdesigner@2"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "TouchDesigner IDE",
+      "properties": {
+        "touchdesigner.serverHost": {
+          "type": "string",
+          "default": "127.0.0.1",
+          "description": "Host/IP of the TouchDesigner companion server."
+        },
+        "touchdesigner.serverPort": {
+          "type": "number",
+          "default": 9988,
+          "description": "WebSocket port of the TouchDesigner companion server."
+        },
+        "touchdesigner.autoConnect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically attempt to connect to TouchDesigner on startup."
+        },
+        "touchdesigner.showTextportOnOutput": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically focus the Textport output channel when code execution produces output or errors."
+        }
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/touchdesigner-ide/touchdesigner-ide"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "node esbuild.js --production",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc --noEmit",
+    "package": "vsce package --no-dependencies --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@types/ws": "^8.5.10",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.20.2",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}

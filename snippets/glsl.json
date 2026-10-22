@@ -1,0 +1,74 @@
+{
+  "TouchDesigner GLSL TOP Pixel Shader": {
+    "prefix": "td-glsl-top",
+    "body": [
+      "// TouchDesigner GLSL TOP Pixel Shader",
+      "",
+      "uniform float uTime;",
+      "",
+      "out vec4 fragColor;",
+      "",
+      "void main()",
+      "{",
+      "\t// Normalized UV coordinates [0.0, 1.0]",
+      "\tvec2 uv = vUV.st;",
+      "",
+      "\t// Sample input texture 0",
+      "\tvec4 inColor = texture(sTD2DInputs[0], uv);",
+      "",
+      "\t// Shading logic",
+      "\tvec4 color = inColor;",
+      "",
+      "\t// TDOutputSwizzle applies color swizzling and pre-multiplication",
+      "\tfragColor = TDOutputSwizzle(color);",
+      "}",
+      ""
+    ],
+    "description": "TouchDesigner GLSL TOP fragment shader template"
+  },
+  "TouchDesigner GLSL TOP Multi-Input": {
+    "prefix": "td-glsl-multi",
+    "body": [
+      "out vec4 fragColor;",
+      "",
+      "void main()",
+      "{",
+      "\tvec2 uv = vUV.st;",
+      "\tvec4 color0 = texture(sTD2DInputs[0], uv);",
+      "\tvec4 color1 = texture(sTD2DInputs[1], uv);",
+      "",
+      "\tvec4 result = mix(color0, color1, ${1:0.5});",
+      "\tfragColor = TDOutputSwizzle(result);",
+      "}",
+      ""
+    ],
+    "description": "TouchDesigner 2-input blend GLSL shader"
+  },
+  "TouchDesigner GLSL MAT Vertex Shader": {
+    "prefix": "td-glsl-vert",
+    "body": [
+      "out Vertex",
+      "{",
+      "\tvec4 color;",
+      "\tvec3 worldSpacePos;",
+      "\tvec3 worldSpaceNorm;",
+      "\tvec2 uv;",
+      "} oVert;",
+      "",
+      "void main()",
+      "{",
+      "\t// TDDeform applies instancing and bone transforms",
+      "\tvec4 worldSpacePos = TDDeform(P);",
+      "\tgl_Position = TDWorldToProj(worldSpacePos);",
+      "",
+      "\toVert.worldSpacePos = worldSpacePos.xyz;",
+      "\toVert.worldSpaceNorm = normalize(TDDeformNorm(N));",
+      "\toVert.color = Cd;",
+      "\toVert.uv = uv[0].st;",
+      "}",
+      ""
+    ],
+    "description": "TouchDesigner GLSL Material Vertex Shader template"
+  }
+}
+
